@@ -9,6 +9,7 @@
             <ui:Button name="btn-refresh" text="fpc.picker.refresh" class="ndmf-tr"/>
         </ui:VisualElement>
         <ui:Toggle name="chk-close-on-add" label="fpc.picker.close_on_add" class="ndmf-tr" value="true"/>
+        <ui:TextField name="picker-search" label="fpc.picker.search" class="ndmf-tr"/>
         <ui:ListView name="PickerList" show-border="true" show-foldout-header="false"/>
         <ui:VisualElement class="fpc-row">
             <ui:Button name="btn-add" text="fpc.picker.add" class="ndmf-tr"/>

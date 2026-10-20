@@ -75,6 +75,8 @@
   "fpc.picker.clear": "Clear",
   "fpc.picker.refresh": "Refresh",
   "fpc.picker.close_on_add": "Close After Add",
+  "fpc.picker.search": "Search",
+  "fpc.picker.search:tooltip": "Shows only the parameters containing this text (case-insensitive).",
   "fpc.picker.add": "Add",
   "fpc.picker.cancel": "Cancel"
 }

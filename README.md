@@ -86,6 +86,8 @@ Three ways to fill it, which can be mixed freely:
   `Enter` does the same as *Add*. **Selection is additive only** - the window never removes anything from the whitelist,
   and parameters that are already whitelisted are not listed at all.
   *Close After Add* (on by default) controls whether the window closes once you press *Add*.
+  The *Search* field shows only the parameters containing the text (case-insensitive). *Select All* / *Invert* work on what is shown,
+  and a selected entry that the search hides is deselected, so *Add* only ever adds what you can see.
 * **Import from Asset** - drop a `VRC Expression Parameters` asset on the field to append every parameter name in it.
 
 *Clear* empties the whole list, asking for confirmation first.

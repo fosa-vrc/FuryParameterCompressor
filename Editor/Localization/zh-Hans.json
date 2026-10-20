@@ -75,6 +75,8 @@
   "fpc.picker.clear": "清空",
   "fpc.picker.refresh": "刷新",
   "fpc.picker.close_on_add": "添加后关闭弹窗",
+  "fpc.picker.search": "搜索",
+  "fpc.picker.search:tooltip": "只显示包含此文本的参数（不区分大小写）。",
   "fpc.picker.add": "添加",
   "fpc.picker.cancel": "取消"
 }

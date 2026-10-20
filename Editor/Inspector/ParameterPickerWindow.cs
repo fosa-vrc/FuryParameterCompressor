@@ -7,6 +7,7 @@
 //     it only means "don't add it". Removing is done in the component's list.
 //   - The window targets the component directly (rather than taking a callback) so that it survives assembly reloads,
 //     and is opened through GetWindow so repeated clicks focus it instead of stacking up copies.
+//   - Adds a search field that filters the list.
 
 using System;
 using System.Collections.Generic;
@@ -27,11 +28,14 @@ namespace FOSA.FPC.Inspector
 
         [SerializeField] private FuryParameterCompressor _target;
 
+        // Every candidate, and the subset of it the search field lets through (the ListView's itemsSource).
+        private readonly List<string> _allNames = new List<string>();
         private readonly List<string> _names = new List<string>();
         private readonly HashSet<string> _existing = new HashSet<string>();
 
         private ListView _listView;
         private Toggle _closeOnAddToggle;
+        private TextField _searchField;
 
         private void OnEnable()
         {
@@ -84,6 +88,8 @@ namespace FOSA.FPC.Inspector
             {
                 ((Label)element).text = _names[index];
             };
+            _searchField = root.Q<TextField>("picker-search");
+            _searchField.RegisterValueChangedCallback(_ => ApplySearch());
             _closeOnAddToggle = root.Q<Toggle>("chk-close-on-add");
             _closeOnAddToggle.value = EditorPrefs.GetBool(CloseOnAddPrefKey, true);
             _closeOnAddToggle.RegisterValueChangedCallback(evt => EditorPrefs.SetBool(CloseOnAddPrefKey, evt.newValue));
@@ -114,6 +120,7 @@ namespace FOSA.FPC.Inspector
         // so Modular Avatar components (and anything else registered with NDMF) are included.
         private void CollectNames()
         {
+            _allNames.Clear();
             _names.Clear();
             _existing.Clear();
             if (_target == null) return;
@@ -125,13 +132,38 @@ namespace FOSA.FPC.Inspector
             {
                 _existing.Add(name);
             }
-            _names.AddRange(ParameterInfo.ForUI.GetParametersForObject(avatarRoot.gameObject)
+            _allNames.AddRange(ParameterInfo.ForUI.GetParametersForObject(avatarRoot.gameObject)
                 .Where(p => p.Namespace == ParameterNamespace.Animator)
                 .Where(p => !p.IsAnimatorOnly && p.WantSynced && !p.IsHidden)
                 .Select(p => p.EffectiveName)
                 .Where(n => !string.IsNullOrEmpty(n) && !_existing.Contains(n))
                 .Distinct()
                 .OrderBy(n => n, StringComparer.Ordinal));
+            FilterNames();
+        }
+
+        // Case-insensitive substring match; an empty search shows everything.
+        // The first CollectNames runs before the search field exists, hence the null check.
+        private void FilterNames()
+        {
+            var query = _searchField?.value;
+            _names.Clear();
+            _names.AddRange(string.IsNullOrEmpty(query)
+                ? _allNames
+                : _allNames.Where(n => n.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0));
+        }
+
+        // Selection is index-based, so it is carried over by name: entries that stay visible stay selected,
+        // and anything the search hides is deselected, so Add only ever adds what is on screen.
+        private void ApplySearch()
+        {
+            var selected = new HashSet<string>(_listView.selectedIndices
+                .Where(i => i >= 0 && i < _names.Count)
+                .Select(i => _names[i]));
+            _listView.ClearSelection();
+            FilterNames();
+            _listView.Rebuild();
+            _listView.SetSelection(Enumerable.Range(0, _names.Count).Where(i => selected.Contains(_names[i])));
         }
 
         private void Refresh()
