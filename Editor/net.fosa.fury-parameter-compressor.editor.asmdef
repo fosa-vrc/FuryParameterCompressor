@@ -1,0 +1,41 @@
+{
+    "name": "net.fosa.fury-parameter-compressor.editor",
+    "rootNamespace": "FOSA.FPC",
+    "references": [
+        "nadena.dev.modular-avatar.core",
+        "nadena.dev.ndmf.runtime",
+        "nadena.dev.ndmf.vrchat",
+        "nadena.dev.ndmf",
+        "net.fosa.fury-parameter-compressor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Newtonsoft.Json.dll",
+        "System.Collections.Immutable.dll",
+        "VRC.Dynamics.dll",
+        "VRC.SDK3.Dynamics.Contact.dll",
+        "VRCCore-Editor.dll",
+        "VRCSDK3A.dll",
+        "VRCSDKBase.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.vrcfury.vrcfury",
+            "expression": "",
+            "define": "FPC_VRCFURY"
+        },
+        {
+            "name": "nadena.dev.modular-avatar",
+            "expression": "",
+            "define": "FPC_MODULAR_AVATAR"
+        }
+    ],
+    "noEngineReferences": false
+}

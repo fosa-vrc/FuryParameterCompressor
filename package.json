@@ -1,0 +1,20 @@
+{
+  "name": "net.fosa.fury-parameter-compressor",
+  "displayName": "Fury Parameter Compressor",
+  "version": "1.0.0",
+  "description": "NDMF port of VRCFury's expression parameter compressor. Add the Fury Parameter Compressor component to an avatar to compress its synced parameters below VRChat's limit.",
+  "unity": "2022.3",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "dependencies": {
+    "com.unity.nuget.newtonsoft-json": "2.0.0"
+  },
+  "vpmDependencies": {
+    "com.vrchat.avatars": ">=3.10.4",
+    "nadena.dev.ndmf": ">=1.14.3"
+  },
+  "author": {
+    "name": "FOSA",
+    "email": "fosa-vrc@users.noreply.github.com",
+    "url": "https://github.com/fosa-vrc/FuryParameterCompressor"
+  }
+}

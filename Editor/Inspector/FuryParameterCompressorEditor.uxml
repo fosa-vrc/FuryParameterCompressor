@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Source: nadena.dev.modular-avatar/Editor/Inspector/Parameters/ParametersMainUI.uxml -->
+<UXML
+        xmlns:ui="UnityEngine.UIElements"
+        xmlns:editor="UnityEditor.UIElements"
+>
+    <ui:HelpBox name="VrcFuryWarning" text="fpc.warning.vrcfury_present" message-type="Warning" class="ndmf-tr"/>
+    <ui:HelpBox name="MaSyncWarning" text="fpc.error.ma_sync_parameter_sequence" message-type="Error" class="ndmf-tr"/>
+
+    <editor:PropertyField name="f-primary-platform" binding-path="PrimaryPlatform"
+                          label="fpc.primary_platform" class="ndmf-tr"/>
+    <editor:PropertyField name="f-write-defaults" binding-path="writeDefaults"
+                          label="fpc.write_defaults" class="ndmf-tr"/>
+
+    <ui:Label text="fpc.parameter_whitelist" class="ndmf-tr"/>
+
+    <ui:VisualElement name="ListViewContainer">
+        <ui:ListView virtualization-method="FixedHeight"
+                     fixed-item-height="20"
+                     reorder-mode="Animated"
+                     reorderable="true"
+                     show-border="true"
+                     show-foldout-header="false"
+                     name="Whitelist"
+                     binding-path="parameterWhitelist"
+                     style="flex-grow: 1;"
+        />
+    </ui:VisualElement>
+
+    <ui:VisualElement class="fpc-row">
+        <ui:Button name="btn-add" text="fpc.parameter_whitelist.add" class="ndmf-tr"/>
+        <ui:Button name="btn-pick" text="fpc.parameter_whitelist.pick" class="ndmf-tr"/>
+    </ui:VisualElement>
+
+    <ui:VisualElement class="fpc-row">
+        <ui:Button name="btn-delete" text="fpc.parameter_whitelist.delete_selected" class="ndmf-tr"/>
+        <ui:Button name="btn-clear" text="fpc.parameter_whitelist.clear" class="ndmf-tr"/>
+    </ui:VisualElement>
+
+    <editor:ObjectField name="p_import" label="fpc.parameter_whitelist.import" class="ndmf-tr"/>
+
+    <ui:Label name="usage"/>
+</UXML>

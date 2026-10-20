@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Source: nadena.dev.modular-avatar/Editor/Inspector/Parameters/ParametersMainUI.uxml -->
+<UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:VisualElement name="PickerRoot">
+        <ui:VisualElement class="fpc-row">
+            <ui:Button name="btn-select-all" text="fpc.picker.select_all" class="ndmf-tr"/>
+            <ui:Button name="btn-invert" text="fpc.picker.invert" class="ndmf-tr"/>
+            <ui:Button name="btn-clear" text="fpc.picker.clear" class="ndmf-tr"/>
+            <ui:Button name="btn-refresh" text="fpc.picker.refresh" class="ndmf-tr"/>
+        </ui:VisualElement>
+        <ui:Toggle name="chk-close-on-add" label="fpc.picker.close_on_add" class="ndmf-tr" value="true"/>
+        <ui:ListView name="PickerList" show-border="true" show-foldout-header="false"/>
+        <ui:VisualElement class="fpc-row">
+            <ui:Button name="btn-add" text="fpc.picker.add" class="ndmf-tr"/>
+            <ui:Button name="btn-cancel" text="fpc.picker.cancel" class="ndmf-tr"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</UXML>

@@ -1,0 +1,39 @@
+/* Source: nadena.dev.modular-avatar/Editor/Inspector/Parameters/Parameters.uss */
+
+#ListViewContainer {
+    max-height: 500px;
+}
+
+.fpc-row {
+    flex-direction: row;
+}
+
+.fpc-row > Button {
+    flex-grow: 1;
+    flex-basis: 0;
+}
+
+.fpc-whitelist-row {
+    flex-direction: row;
+}
+
+.fpc-whitelist-field {
+    flex-grow: 1;
+    flex-shrink: 2;
+}
+
+.fpc-whitelist-delete-btn {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+#PickerRoot {
+    flex-grow: 1;
+}
+
+#PickerList {
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0;
+}
