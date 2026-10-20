@@ -99,14 +99,20 @@ Duplicate and blank entries are allowed on purpose; they are only collapsed at t
 Three NDMF passes:
 
 * **Check for conflicts** - `BuildPhase.Resolving`, i.e. before Modular Avatar deletes its own components.
-* **Compress parameters** - `BuildPhase.Transforming`, declared `AfterPlugin` against *every* NDMF plugin found in the project
-  (discovered by scanning assemblies for `[assembly: ExportsPlugin]`) and `BeforePlugin` against Avatar Optimizer,
+* **Compress parameters** - `BuildPhase.Optimizing`, declared `AfterPlugin` against *every* NDMF plugin found in the project
+  (discovered by scanning assemblies for `[assembly: ExportsPlugin]`),
   so that it sees the final parameter list. It requires NDMF's `AnimatorServicesContext`.
-* **Remove component** - `BuildPhase.Optimizing`, and unlike the two above it runs on *every* NDMF platform.
+* **Remove component** - `BuildPhase.Optimizing`, unlike the two above it runs on *every* NDMF platform.
   On VRChat builds it is a no-op (the compressor pass already removed the component);
   on other platforms it is the only pass that runs, so exports never ship the component.
 
 The component is destroyed at the end of the pass in every case, including when compression was skipped.
+
+> **`Constraint loop detected`:** *Compress parameters* is ordered after every other NDMF plugin,
+> so a plugin that in turn insists on running after this one (for example, another tool that also orders itself after every plugin)
+> forms a loop with it, and NDMF then fails every build with `Constraint loop detected`.
+> If you see this error, please [report it](https://github.com/fosa-vrc/FuryParameterCompressor/issues) as soon as possible,
+> together with the NDMF plugins installed in your project.
 
 ### Aborts and skips
 

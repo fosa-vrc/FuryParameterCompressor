@@ -4,12 +4,12 @@
 //   - VRCFury ran its compressor unconditionally as part of its own build pipeline.
 //     Here the work only happens when the avatar carries a FuryParameterCompressor component,
 //     and the component is removed when we're done.
-//   - The Transforming sequence declares AfterPlugin() against every NDMF plugin found in the project
-//     (and BeforePlugin() against Avatar Optimizer), so that compression runs as late as possible -
+//   - The Optimizing sequence declares AfterPlugin() against every NDMF plugin found in the project,
+//     so that compression runs as late as possible -
 //     after Modular Avatar and after any third-party plugin the user happens to have installed.
 //     These are weak ordering constraints, so a plugin that doesn't run in this phase costs nothing.
 //   - Conflict detection runs in the Resolving phase, because MA destroys its own components
-//     (including ModularAvatarSyncParameterSequence) before the end of Transforming.
+//     (including ModularAvatarSyncParameterSequence) before the end of Optimizing.
 //   - Modular Avatar is an optional dependency. The one MA type this pass needs is reached through
 //     MaSyncParameterSequenceDetector, which is guarded by the FPC_MODULAR_AVATAR versionDefine and
 //     reports "nothing found" when MA is not installed.
@@ -41,31 +41,17 @@ namespace FOSA.FPC.Plugin
             BuildReport.LogException(e);
         }
 
-        /// <summary>
-        ///     Plugins we must NOT declare an AfterPlugin() constraint against,
-        ///     because we declare a BeforePlugin() constraint against them.
-        ///     Declaring both directions is a constraint loop, and NDMF's solver throws on those.
-        /// </summary>
-        private static readonly string[] RunBefore = { "com.anatawa12.avatar-optimizer" };
-
         protected override void Configure()
         {
             InPhase(BuildPhase.Resolving).Run(DetectConflictsPass.Instance);
 
-            var seq = InPhase(BuildPhase.Transforming);
+            var seq = InPhase(BuildPhase.Optimizing);
 
-            // Run as late as we possibly can in the Transforming phase: parameters have to be final
-            // before we can decide what to compress.
+            // Run as late as we possibly can in the Optimizing phase, after every other plugin:
+            // parameters have to be final before we can decide what to compress.
             foreach (var qualifiedName in OtherPluginQualifiedNames())
             {
                 seq.AfterPlugin(qualifiedName);
-            }
-
-            // ...but still before Avatar Optimizer gets to work on the result. (Avatar Optimizer runs in
-            // the Optimizing phase today, so this is only a safety net.)
-            foreach (var qualifiedName in RunBefore)
-            {
-                seq.BeforePlugin(qualifiedName);
             }
 
             seq.WithRequiredExtension(typeof(AnimatorServicesContext), s => s.Run(ParameterCompressorPass.Instance));
@@ -75,7 +61,7 @@ namespace FOSA.FPC.Plugin
             // on other platforms (e.g. Resonite) both passes above are skipped by their [RunsOnPlatforms] gate,
             // and FuryParameterCompressor only implements VRChat's IEditorOnly, which nothing else strips there.
             // MA purges its own components with a RunsOnAllPlatforms pass for the same reason.
-            InPhase(BuildPhase.Optimizing).Run(RemoveComponentPass.Instance);
+            seq.Run(RemoveComponentPass.Instance);
         }
 
         // Every NDMF plugin in the project except ourselves.
@@ -109,7 +95,6 @@ namespace FOSA.FPC.Plugin
                         var plugin = export.PluginType.GetConstructor(Type.EmptyTypes)?.Invoke(Array.Empty<object>()) as PluginBase;
                         if (plugin == null) continue;
                         if (plugin.QualifiedName == Instance.QualifiedName) continue;
-                        if (RunBefore.Contains(plugin.QualifiedName)) continue;
                         names.Add(plugin.QualifiedName);
                     }
                     catch (Exception)

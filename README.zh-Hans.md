@@ -78,10 +78,12 @@ Inspector 还会显示当前 Avatar 的参数占用，数值通过 NDMF 的参�
 三个 NDMF Pass：
 
 * **Check for conflicts** —— `BuildPhase.Resolving`，即在 Modular Avatar 删除自己的组件之前执行。
-* **Compress parameters** —— `BuildPhase.Transforming`，对项目中找到的**每一个** NDMF 插件都声明了 `AfterPlugin`（通过扫描程序集上的 `[assembly: ExportsPlugin]` 发现），并对 Avatar Optimizer 声明了 `BeforePlugin`，以保证它看到的是最终的参数列表。该 Pass 依赖 NDMF 的 `AnimatorServicesContext`。
+* **Compress parameters** —— `BuildPhase.Optimizing`，对项目中找到的**每一个** NDMF 插件都声明了 `AfterPlugin`（通过扫描程序集上的 `[assembly: ExportsPlugin]` 发现），以保证它看到的是最终的参数列表。该 Pass 依赖 NDMF 的 `AnimatorServicesContext`。
 * **Remove component** —— `BuildPhase.Optimizing`，与上面两个不同，它在**所有** NDMF 平台上运行。VRChat 构建中它是空操作（压缩 Pass 已经移除了组件）；在其他平台上它是唯一会运行的 Pass，确保导出产物不会带着组件。
 
 无论是否真的执行了压缩，组件都会在 Pass 结束时从构建产物中移除。
+
+> **`Constraint loop detected`**：Compress parameters 被排在所有其他 NDMF 插件之后，因此如果某个插件反过来要求排在它之后（例如另一个同样把自己排在所有插件之后的工具），就会与它形成循环约束，NDMF 随即会以 `Constraint loop detected` 让所有构建失败。遇到此报错时，请及时[反馈给我们](https://github.com/fosa-vrc/FuryParameterCompressor/issues)，并附上项目中安装的 NDMF 插件列表。
 
 ### 中止与跳过
 

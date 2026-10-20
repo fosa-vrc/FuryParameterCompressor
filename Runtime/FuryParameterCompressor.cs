@@ -2,7 +2,7 @@
 // Changes:
 //   - Base class changed from AvatarTagComponent to MonoBehaviour + IEditorOnly,
 //     so that MA's "Purge ModularAvatar components" pass (LateTransformPluginDefinition) does not destroy this component before our pass,
-//     which deliberately runs at the very end of the Transforming phase.
+//     which deliberately runs at the very end of the Optimizing phase.
 //   - Platform enum kept as-is (PC/Android/iOS) but the default is PC instead of Android.
 //   - Dropped the obsolete `Parameters` field, dropped Reset()/RuntimeUtil.IsResetFromInspector().
 //   - Added writeDefaults (Auto/ForceOn/ForceOff, "Auto" mirrors MA Merge Animator's matchAvatarWriteDefaults)
