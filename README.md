@@ -112,7 +112,7 @@ The component is destroyed at the end of the pass in every case, including when 
 | --- | --- |
 | More than one component on the avatar | `[FPC-0001]` error, build aborts |
 | **MA Sync Parameter Sequence** on the same avatar | `[FPC-0002]` error, build aborts |
-| **VRCFury** detected in the project (package or `Assets/` copy) | `[FPC-0003]` warning, nothing is done - VRCFury's own compressor takes over |
+| **VRCFury** detected in the project (package or `Assets/` copy), with *Tools > VRCFury > Settings > When avatar is over parameter limit* left at *Compress parameters to fit* (the default) | `[FPC-0003]` warning, nothing is done - VRCFury's own compressor takes over. Set it to *Ask* or *Fail the build* to have this tool compress instead |
 | Cannot fit even at maximum compression | `[FPC-0004]` error, build aborts |
 | Secondary platform, no primary-platform record (or no blueprint ID) | `[FPC-0005]` error, build aborts |
 | Secondary platform has a synced parameter the primary doesn't | `[FPC-0006]` error, build aborts |

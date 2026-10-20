@@ -9,6 +9,7 @@
 //   - Adds Pick / Delete Selected / Clear buttons; MA relies on the Delete key alone.
 
 using System.Linq;
+using FOSA.FPC.Plugin;
 using FOSA.FPC.SyncParameterSequence;
 using FOSA.FPC.Utils;
 using nadena.dev.ndmf;
@@ -26,21 +27,13 @@ namespace FOSA.FPC.Inspector
     {
         private ListView _whitelistView;
 
-#if FPC_VRCFURY
-        private static readonly bool VrcFuryPresent = true;
-#else
-        // Same fallback as DetectConflictsPass: versionDefines only sees package installs.
-        private static readonly bool VrcFuryPresent =
-            System.AppDomain.CurrentDomain.GetAssemblies().Any(a => a.GetName().Name == "VRCFury");
-#endif
-
         protected override VisualElement CreateInnerInspectorGUI()
         {
             var root = UIElementsUtil.Clone("FuryParameterCompressorEditor");
             var component = (FuryParameterCompressor)target;
             var avatarRoot = RuntimeUtil.FindAvatarInParents(component.transform);
 
-            root.Q<HelpBox>("VrcFuryWarning").SetVisible(VrcFuryPresent);
+            root.Q<HelpBox>("VrcFuryWarning").SetVisible(DetectConflictsPass.VrcFuryPresent);
             root.Q<HelpBox>("MaSyncWarning").SetVisible(avatarRoot != null &&
                 MaSyncParameterSequenceDetector.Exists(avatarRoot.gameObject));
 

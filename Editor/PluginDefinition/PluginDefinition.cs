@@ -136,13 +136,27 @@ namespace FOSA.FPC.Plugin
         public override string DisplayName => "Check for conflicts";
 
 #if FPC_VRCFURY
-        private static readonly bool VrcFuryPresent = true;
+        private static readonly bool VrcFuryInstalled = true;
 #else
         // The versionDefines check only sees VRCFury installed as a package;
         // a copy dropped under Assets/ still compiles its "VRCFury" runtime assembly, so probe for that as a fallback.
-        private static readonly bool VrcFuryPresent =
+        private static readonly bool VrcFuryInstalled =
             AppDomain.CurrentDomain.GetAssemblies().Any(a => a.GetName().Name == "VRCFury");
 #endif
+
+        // Source: com.vrcfury.vrcfury/Editor-Avatars/Menu/CompressorMenuItem.cs
+        // VRCFury's "When avatar is over parameter limit" setting: 0 = Compress, 1 = Ask, 2 = Fail.
+        // A pref that was never set reads as 0, the same default VRCFury uses.
+        private const string VrcFuryCompressorPref = "com.vrcfury.parameterCompressor";
+
+        /// <summary>
+        ///     True when VRCFury is installed and set to compress parameters itself, so it takes over from us.
+        ///     In Ask / Fail mode VRCFury doesn't compress silently, so we do it ourselves.
+        ///     Also read by FuryParameterCompressorEditor.
+        ///     Not cached: the pref can be changed from VRCFury's menu at any time without a domain reload.
+        /// </summary>
+        internal static bool VrcFuryPresent =>
+            VrcFuryInstalled && UnityEditor.EditorPrefs.GetInt(VrcFuryCompressorPref, 0) == 0;
 
         protected override void Execute(BuildContext context)
         {

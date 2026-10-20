@@ -89,7 +89,7 @@ Inspector 还会显示当前 Avatar 的参数占用，数值通过 NDMF 的参�
 | --- | --- |
 | Avatar 上存在多个组件 | `[FPC-0001]` 报错，中止构建 |
 | 同一 Avatar 上存在 **MA Sync Parameter Sequence** | `[FPC-0002]` 报错，中止构建 |
-| 项目中检测到 **VRCFury**（包安装或 Assets 散装均可） | `[FPC-0003]` 警告，什么都不做——交由 VRCFury 自带的压缩器处理 |
+| 项目中检测到 **VRCFury**（包安装或 Assets 散装均可），且 `Tools > VRCFury > Settings > When avatar is over parameter limit` 保持为 `Compress parameters to fit`（默认值） | `[FPC-0003]` 警告，什么都不做——交由 VRCFury 自带的压缩器处理。将其改为 `Ask` 或 `Fail the build` 即可改由本工具压缩 |
 | 即使最大压缩强度也放不下 | `[FPC-0004]` 报错，中止构建 |
 | 副平台没有主平台记录（或没有 blueprint ID） | `[FPC-0005]` 报错，中止构建 |
 | 副平台存在主平台没有的同步参数 | `[FPC-0006]` 报错，中止构建 |
